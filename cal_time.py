@@ -5,7 +5,11 @@ def relu(number):
         return 0
 
 
-def cal_time(orders, efficiency):
+def cal_time(orders, efficiency, flag=0):
+    # efficiency = [44, 35, 23, 6, 12]
+    # efficiency = [47, 34, 23, 5, 11]
+    # efficiency = [45, 36, 23, 5, 11]
+    # efficiency = [46, 33, 23, 6, 12]
     for i in range(len(orders)):
         # order进入五个分区的时间
         gene_time = [0] * 5
@@ -16,7 +20,16 @@ def cal_time(orders, efficiency):
         # order在五个分区结束的时间
         fini_time = [0] * 5
 
-        quantity = orders[f'order_{i:03}'].section_sum()
+        quantity = []
+        if flag == 0:
+            quantity = orders[f'order_{i:03}'].section_sum()
+        else:
+            for products in orders[f'order_{i:03}'].sections.values():
+                total = 0
+                for num in products:
+                    total += int(num)
+                quantity.append(total)
+
         gene_time[0] = orders[f'order_{i:03}'].time
 
         if i == 0:  # order_001不需要等待

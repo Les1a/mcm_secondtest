@@ -75,6 +75,16 @@ class Order:
                 quantity = int(np.clip(quantity, 0, 100))  # 依据泊松分布初始化数量为0-100
                 self.sections[section].append((product_name, quantity))
 
+    # 从csv文件中读取订单
+    def read_sections(self, data):
+        self.sections['食品区'] = data[7:17]
+        self.sections['饮料区'] = data[17:27]
+        self.sections['日用品区'] = data[27:37]
+        self.sections['电器区'] = data[37:47]
+        self.sections['礼品区'] = data[47:57]
+        self.gene_time[0] = int(data[57])
+        self.time = 0
+
     def get_order(self):
         order_array = []
         # 打印订单中的商品信息
@@ -121,7 +131,7 @@ if __name__ == '__main__':
     order.print_order_table()  # 打印订单中的商品信息'''
     all_order = []
     for i in range(0, 1000):
-        order = Order([80, 60, 40, 10, 20])
+        order = Order([80, 60, 40, 10, 20], flag=0)
 
         all_order.append(order.get_order())
         print('======>', i, '<======', order.time)
